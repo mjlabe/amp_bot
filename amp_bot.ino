@@ -15,21 +15,21 @@ void setup() {
 } 
 
 class Knob(KnobValues amp_knob) {
-  int _switch = amp_knob._switch;
-  int _led = amp_knob._led;
-  float _knob = amp_knob._knob;
+  int _switch_pin = amp_knob._switch_pin;
+  int _led_pin = amp_knob._led_pin;
+  float _knob_pin = amp_knob._knob_pin;
 
   int _switch_state = LOW;
-  float _knob_state_LOW = amp_knob._knob_low;
-  float _knob_state_HIGH = amp_knob._knob_high;
+  float _knob_state_low = amp_knob._knob_low_value;
+  float _knob_state_high = amp_knob._knob_high_value;
 
   void switch() {
     // change switch state and update LED
     _switch_state = (_switch_state == LOW)? HIGH: LOW;
-    digitalWrite(_led, _switch_state);
+    digitalWrite(_led_pin, _switch_state);
 
-    float _knob_state = (_knob_state == _knob_state_LOW)? _knob_state_HIGH: _knob_state_LOW;
-    VarSpeedServo.slowmove(_knob, _knob_state);
+    float _knob_state = (_knob_state == _knob_state_low)? _knob_state_high: _knob_state_low;
+    VarSpeedServo.slowmove(_knob_pin, _knob_state);
   }
 }
 

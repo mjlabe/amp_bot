@@ -1,9 +1,9 @@
 struct KnobValues {
-  int _switch;
-  int _led;
-  int _knob;
-  float _knob_low;
-  float _knob_high;
+  int _switch_pin;
+  int _led_pin;
+  int _knob_pin;
+  float _knob_low_value;
+  float _knob_high_value;
 };
 
 // list of knobs {foot_switch_pin, led_pin, knob_servo_pin, knob_clock_value_low, knob_clock_value_high}
