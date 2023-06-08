@@ -1,3 +1,4 @@
+#include "amp_bot.h"
 #include <VarSpeedServo.h>
 
 
@@ -13,7 +14,7 @@ void setup() {
   }
 } 
 
-class Knob(knob amp_knob) {
+class Knob(KnobValues amp_knob) {
   int _switch = amp_knob._switch;
   int _led = amp_knob._led;
   float _knob = amp_knob._knob;
