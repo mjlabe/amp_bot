@@ -7,12 +7,16 @@ Knob::Knob(KnobValues amp_knob) {
   int _led_pin = amp_knob._led_pin;
   int _knob_pin = amp_knob._knob_pin;
 
+  int _knob_state_low = amp_knob._knob_low_value;
+  int _knob_state_high = amp_knob._knob_high_value;
+
   Servo knob_servo;
   knob_servo.attach(amp_knob._knob_pin);  // attaches the servo on _knob_pin to the servo object
 
+  // init
   int _switch_state = LOW;
-  int _knob_state_low = amp_knob._knob_low_value;
-  int _knob_state_high = amp_knob._knob_high_value;
+  digitalWrite(_led_pin, _switch_state);
+  move();
 }
 
 void Knob::switch_state() {
