@@ -5,8 +5,12 @@ class Servo:
     def __init__(self, pin_number, steps=20):
         pin = machine.Pin(pin_number)
         self.servo = machine.PWM(pin, freq=50)
-        self.position = 0
+        self.position = self.get()
         self.steps = steps
+
+    def get(self):
+        # TO DO
+        return 0
 
     def set(self, angle):
         self.position = angle
