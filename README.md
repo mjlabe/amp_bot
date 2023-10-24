@@ -2,18 +2,12 @@
 
 Control amp knobs with a footswitch
 
-## Setup
+## Getting Started
 
-Connect switches, leds, and servos to the pins you want. Then update `amp_bot.h` with your pinout.
+## Hardware
 
-> Suggested:
->
->   TBD
-> 
-> See [Wiring](#wiring)
+### Diagram
 
-## Wiring
+![Circuit Diagram](docs/assets/circuit_diagram.png)
 
-TBD
-
-![docs/amp_bot_wiring.jpg](docs/amp_bot_wiring.jpg "Amp Bot Wiring")
+### Parts List
