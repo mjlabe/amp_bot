@@ -4,43 +4,39 @@ from src.hardware.servo import Servo
 
 
 class Switch:
-    def __init__(self, pin, interrupt=False):
+    def __init__(self, pin, time_to_hold_ms=5000):
         self.switch = machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_UP)
-        self.presses = 0
-        if interrupt:
-            self.switch.irq(trigger=machine.Pin.IRQ_FALLING, handler=self._handler)
+        self.time_to_hold_ms = time_to_hold_ms
+        self.switch.irq(trigger=machine.Pin.IRQ_FALLING, handler=self._handler)
 
-    def handler(self, held=0):
+    def handler(self, time_held):
         raise NotImplementedError("Switch is an abstract class and the handler method needs to be defined.")
 
-    def _handler(self, held=0):
+    def _handler(self):
         self._debounce()
-        self.handler(held)
+        self.handler(self._wait_for_pin_change())
 
-    def _debounce(self, hold_length_s=5):
+    def _debounce(self):
         # disable the IRQ during our debounce check
         self.switch.irq(handler=None)
-        # debounce time - we ignore any activity during this period
-        held_length_s = 0
-        while held_length_s < hold_length_s:
-            utime.sleep_ms(200)
+        # wait for pin to change value
+        # it needs to be stable for a continuous 20ms
+        cur_value = self.switch.value()
+        active = 0
+        while active < 20:
+            if self.switch.value() != cur_value:
+                active += 1
+            else:
+                active = 0
+            utime.sleep_ms(1)
+
+    def _wait_for_pin_change(self) -> int:
+        time_held_ms = 0
+        utime.sleep_ms(20)
+        while time_held_ms < self.time_to_hold_ms:
+            utime.sleep_ms(20)
+            time_held_ms += 20
             if self.switch.value() != 0:
                 # re-enable the IRQ
                 self.switch.irq(trigger=machine.Pin.IRQ_FALLING, handler=self._handler)
-                return
-        self.save_preset()
-
-    def save_preset(self):
-        # read servo values
-        preset_settings = {}
-        for pin in SERVO_PINS:
-            servo = Servo(pin_number=pin)
-            preset_settings[pin] = servo.get()
-        # save values
-        if preset_settings:
-            save(self.switch, preset_settings)
-        else:
-            # flash LED to show error
-            pass
-
-
+        return time_held_ms
